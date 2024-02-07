@@ -6,89 +6,50 @@ import java.util.*;
 public class Solution_bj_7576_토마토 {
 	static final int[] di= {-1,1,0,0}; // 상하좌우
 	static final int[] dj= {0,0,-1,1};
-	static int N, M;
-	static int[][] arr;
-	static boolean[][] v;
-	static ArrayList<Integer> timeArr;
 	
-	static void bfs(int i, int j) {
-		ArrayDeque<int[]> q = new ArrayDeque<>();
-		v[i][j]=true;
-		q.offer(new int[]{i,j,1});
-		while(!q.isEmpty()) {
-			int[] ij = q.poll();
-			i=ij[0];
-			j=ij[1];
-			int time=ij[2];
-			for(int d=0; d<4; d++) {
-				int ni=i+di[d];
-				int nj=j+dj[d];
-				if(0<=ni && ni<N && 0<=nj && nj<M && !v[ni][nj] && arr[ni][nj]==0) {
-					v[ni][nj]=true;
-					arr[ni][nj]=1;
-					q.offer(new int[]{ni,nj,time+1});
-					timeArr.add(time);
-				}
-			}
-		}
-	}
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
 		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-		M = Integer.parseInt(st.nextToken());
-		N = Integer.parseInt(st.nextToken());
-		arr = new int[N][M];
-		v = new boolean[N][M];
+		int M = Integer.parseInt(st.nextToken());
+		int N = Integer.parseInt(st.nextToken());
+		int[][] tomato = new int[N][M]; // 토마토 익은 상태 저장
+		int[][] time = new int[N][M]; // 익는 날짜 저장
+		ArrayDeque<int[]> q = new ArrayDeque<>(); // bfs 탐색 큐
 		for(int i=0; i<N; i++) {
 			st = new StringTokenizer(br.readLine(), " ");
 			for(int j=0; j<M; j++) {
-				arr[i][j] = Integer.parseInt(st.nextToken());
-			}
-		}
-		boolean b = true;
-		A:for(int i=0; i<N; i++) {
-			for(int j=0; j<M; j++) {
-				if(arr[i][j]==0) {
-					b = false;
-					break A;
+				tomato[i][j] = Integer.parseInt(st.nextToken());
+				if(tomato[i][j]==1) { // 익은 토마토 위치 큐에 저장
+					q.offer(new int[] {i,j});
+				}
+				if(tomato[i][j]==0) { // 익지 않은 토마토 날짜 -1로 초기화
+					time[i][j] = -1;
 				}
 			}
 		}
-		if(b) {
-			System.out.println("0");
-			return;
+		while(!q.isEmpty()) {
+			int[] ij = q.poll();
+			int i=ij[0];
+			int j=ij[1];
+			for(int d=0; d<4; d++) {
+				int ni=i+di[d];
+				int nj=j+dj[d];
+				if(0<=ni && ni<N && 0<=nj && nj<M && time[ni][nj]==-1) { // 탐색범위가 인덱스 내이고 토마토가 익지 않았다면
+					time[ni][nj] = time[i][j] + 1;
+					q.offer(new int[]{ni,nj});
+				}
+			}
 		}
 		int ans = 0;
 		for(int i=0; i<N; i++) {
 			for(int j=0; j<M; j++) {
-				if(arr[i][j]==1&&!v[i][j]) {
-					timeArr = new ArrayList<>();
-					bfs(i,j);
-					Collections.sort(timeArr);
-					if(timeArr.size()!=0) {
-						int time = timeArr.get(timeArr.size()-1);
-						if(time>ans) {
-							ans = time;
-						}
-					}
+				if(time[i][j]==-1) {
+					System.out.println(-1);
+					return;
 				}
+				ans = Math.max(ans, time[i][j]);
 			}
 		}
-		b = false;
-		A:for(int i=0; i<N; i++) {
-			for(int j=0; j<M; j++) {
-				if(arr[i][j]==0) {
-					b = true;
-					break A;
-				}
-			}
-		}
-		if(b) {
-			System.out.println("-1");
-			return;
-		}
-		sb.append(ans);
-		System.out.println(sb);
+		System.out.println(ans);
 	}
 }
