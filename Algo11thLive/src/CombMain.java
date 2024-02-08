@@ -14,7 +14,8 @@ public class CombMain {
     	}
     	for(int i=start; i<N; i++) {
     		b[cnt] = a[i];
-    		comb(cnt+1, i+1); //comb(cnt+1,i);
+    		comb(cnt+1, i+1); 
+    		//comb(cnt+1,i);
     	}
     }
     public static void main(String[] args) {
