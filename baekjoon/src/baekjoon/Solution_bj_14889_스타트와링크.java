@@ -1,9 +1,9 @@
-package a0208.camp;
+package baekjoon;
 
 import java.io.*;
 import java.util.*;
  
-public class Solution_D9_4012_요리사_서울_20반_신호준 {
+public class Solution_bj_14889_스타트와링크 {
 	static int N, R;
 	static boolean[] v;
     static int[][] S;
@@ -32,26 +32,22 @@ public class Solution_D9_4012_요리사_서울_20반_신호준 {
     	}
     }
     public static void main(String[] args) throws Exception {
-    	System.setIn(new FileInputStream("res/input_d9_4012.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
-        int T = Integer.parseInt(br.readLine());
          
-        for(int tc=1; tc<=T; tc++) {
-        	N = Integer.parseInt(br.readLine());
-        	R = N/2;
-        	v = new boolean[N];
-        	S = new int[N][N];
-        	ans = Integer.MAX_VALUE;
-        	for(int i=0; i<N; i++) {
-        		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-        		for(int j=0; j<N; j++) {
-        			S[i][j] = Integer.parseInt(st.nextToken());
-        		}
-        	}
-        	comb(0,0);
-        	sb.append("#"+tc+" "+ans+"\n");
-        }
+    	N = Integer.parseInt(br.readLine());
+    	R = N/2;
+    	v = new boolean[N];
+    	S = new int[N][N];
+    	ans = Integer.MAX_VALUE;
+    	for(int i=0; i<N; i++) {
+    		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+    		for(int j=0; j<N; j++) {
+    			S[i][j] = Integer.parseInt(st.nextToken());
+    		}
+    	}
+    	comb(0,0);
+    	sb.append(ans);
         System.out.println(sb);
         br.close();
     }

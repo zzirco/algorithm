@@ -3,7 +3,7 @@ package baekjoon;
 import java.io.*;
 import java.util.*;
 
-public class Solution_bj_1244_스위치켜고끄기_서울_20반_신호준 {
+public class Solution_bj_1244_스위치켜고끄기 {
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());  // 스위치 개수 100이하 양의 정수

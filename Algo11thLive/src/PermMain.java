@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class PermMain {
-	static int N = 4, R = 3, C = 0;
+	static int N = 4, R = 2, C = 0;
 	static int[] a = { 1, 2, 3, 4 }, b = new int[R];
 	static boolean[] v = new boolean[N];
 

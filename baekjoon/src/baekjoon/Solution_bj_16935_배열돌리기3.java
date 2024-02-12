@@ -4,25 +4,19 @@ import java.io.*;
 import java.util.*;
 
 public class Solution_bj_16935_배열돌리기3 {
-	static int N, M;
+	static int[][] arr;
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
 		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-		N = Integer.parseInt(st.nextToken());
-		M = Integer.parseInt(st.nextToken());
+		int N = Integer.parseInt(st.nextToken());
+		int M = Integer.parseInt(st.nextToken());
 		int R = Integer.parseInt(st.nextToken());
-		String[][] arr;
-		if(N>M) {
-			arr = new String[N][N];
-		} else {
-			arr = new String[M][M];
-		}
-		
+		arr = new int[N][M];
 		for(int i=0; i<N; i++) {
 			st = new StringTokenizer(br.readLine(), " ");
 			for(int j=0; j<M; j++) {
-				arr[i][j] = st.nextToken();
+				arr[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
 		Queue<Integer> q = new ArrayDeque<>();
@@ -33,104 +27,102 @@ public class Solution_bj_16935_배열돌리기3 {
 		while(!q.isEmpty()) {
 			int order = q.poll();
 			switch(order) {
-				case 1:
-					arr = m1(arr);
-					break;
-				case 2:
-					arr = m2(arr);
-					break;
-				case 3:
-					arr = m3(arr);
-					break;
-				case 4:
-					arr = m4(arr);
-					break;
-				case 5:
-					arr = m5(arr);
-					break;
-				case 6:	
-					arr = m6(arr);
-					break;
+				case 1: m1(); break;
+				case 2: m2(); break;
+				case 3: m3(); break;
+				case 4: m4(); break;
+				case 5: m5(); break;
+				case 6:	m6(); break;
 			}
 		}
 		for(int i=0; i<arr.length; i++) {
 			for(int j=0; j<arr[i].length; j++) {
-				if(arr[i][j]==null) continue;
-				System.out.print(arr[i][j]+" ");
+				sb.append(arr[i][j]+" ");
 			}
-			System.out.println();
+			sb.append("\n");
 		}
+		System.out.println(sb);
 	}
-	static String[][] m1(String[][] arr) {
+	static void m1() {
 		int N = arr.length;
 		int M = arr[0].length;
-		String[][] ans = new String[N][M];
-		for(int i=0; i<N; i++) {
+		for(int i=0; i<N/2; i++) {
 			for(int j=0; j<M; j++) {
-				ans[i][j] = arr[N-1-i][j];
+				int tmp = arr[i][j];
+				arr[i][j] = arr[N-1-i][j];
+				arr[N-1-i][j] = tmp;
 			}
 		}
-		return ans;
 	}
-	static String[][] m2(String[][] arr) {
+	static void m2() {
 		int N = arr.length;
 		int M = arr[0].length;
-		String[][] ans = new String[N][M];
 		for(int i=0; i<N; i++) {
-			for(int j=0; j<M; j++) {
-				ans[i][j] = arr[i][M-1-j];
+			for(int j=0; j<M/2; j++) {
+				int tmp = arr[i][j];
+				arr[i][j] = arr[i][M-1-j];
+				arr[i][M-1-j] = tmp;
 			}
 		}
-		return ans;
 	}
-	static String[][] m3(String[][] arr) {
+	static void m3() {
 		int N = arr.length;
 		int M = arr[0].length;
-		String[][] ans = new String[M][N];
+		int[][] tmp = new int[N][M];
+		for(int i=0; i<N; i++) {
+			tmp[i] = arr[i].clone();
+		}
+		arr = new int[M][N];
 		for(int i=0; i<M; i++) {
 			for(int j=0; j<N; j++) {
-				ans[i][j] = arr[N][i];
+				arr[i][j] = tmp[N-1-j][i];
 			}
 		}
-		return ans;
 	}
-	static String[][] m4(String[][] arr) {
+	static void m4() {
 		int N = arr.length;
 		int M = arr[0].length;
-		String[][] ans = new String[M][N];
+		int[][] tmp = new int[N][M];
+		for(int i=0; i<N; i++) {
+			tmp[i] = arr[i].clone();
+		}
+		arr = new int[M][N];
 		for(int i=0; i<M; i++) {
 			for(int j=0; j<N; j++) {
-				ans[i][j] = arr[j][M-1-i];
+				arr[i][j] = tmp[j][M-1-i];
 			}
 		}
-		return ans;
 	}
-	static String[][] m5(String[][] arr) {
+	static void m5() {
 		int N = arr.length;
 		int M = arr[0].length;
-		String[][] ans = new String[N][M];
+		int[][] tmp = new int[N][M];
+		for(int i=0; i<N; i++) {
+			tmp[i] = arr[i].clone();
+		}
 		for(int i=0; i<N; i++) {
 			for(int j=0; j<M; j++) {
-				if(i<N/2&&j<M/2) ans[i][j] =  arr[i+N/2][j];
-				else if(i<N/2&&M/2<=j) ans[i][j] = arr[i][j-M/2];
-				else if(N/2<=i&&j<M/2) ans[i][j] =  arr[i][j+M/2];
-				else ans[i][j] =  arr[i-N/2][j];
+				if(i<N/2&&j<M/2) arr[i][j] =  tmp[i+N/2][j];
+				else if(i<N/2&&M/2<=j) arr[i][j] = tmp[i][j-M/2];
+				else if(N/2<=i&&j<M/2) arr[i][j] =  tmp[i][j+M/2];
+				else arr[i][j] =  tmp[i-N/2][j];
 			}
 		}
-		return ans;
 	}
-	static String[][] m6(String[][] arr) {
+	static void m6() {
 		int N = arr.length;
 		int M = arr[0].length;
-		String[][] ans = new String[N][M];
+		int[][] tmp = new int[N][M];
+		for(int i=0; i<N; i++) {
+			tmp[i] = arr[i].clone();
+		}
 		for(int i=0; i<N; i++) {
 			for(int j=0; j<M; j++) {
-				if(i<N/2&&j<M/2) ans[i][j] = arr[i][j+M/2];
-				else if(i<N/2&&M/2<=j) ans[i][j] = arr[i+N/2][j];
-				else if(N/2<=i&&j<M/2) ans[i][j] = arr[i-N/2][j];
-				else ans[i][j] = arr[i][j-M/2];
+				if(i<N/2&&j<M/2) arr[i][j] = tmp[i][j+M/2];
+				else if(i<N/2&&M/2<=j) arr[i][j] = tmp[i+N/2][j];
+				else if(N/2<=i&&j<M/2) arr[i][j] = tmp[i-N/2][j];
+				else arr[i][j] = tmp[i][j-M/2];
 			}
 		}
-		return ans;
 	}
 }

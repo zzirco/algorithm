@@ -4,36 +4,41 @@ import java.io.*;
 import java.util.*;
  
 public class Solution_D3_5215_햄버거다이어트_서울_20반_신호준 {
+	static int N, L;
+    static int[][] input;
+    static int ans;
+     
+    static void comb(int cnt, int sum1, int sum2) {
+    	if(sum2>L) return;
+        if(cnt==N) {
+        	if(sum1>ans) {
+        		ans = sum1;
+        	}
+        	return;
+        }
+        comb(cnt+1, sum1+input[cnt][0], sum2+input[cnt][1]);
+        comb(cnt+1, sum1, sum2);
+    }
     public static void main(String[] args) throws Exception {
+    	System.setIn(new FileInputStream("res/input_d3_5215.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
         int T = Integer.parseInt(br.readLine());
-         
         for(int tc=1; tc<=T; tc++) {
-            StringTokenizer ST = new StringTokenizer(br.readLine(), " ");
-            int N = Integer.parseInt(ST.nextToken());
-            int L = Integer.parseInt(ST.nextToken());
-            int[] tast = new int[N+1];
-            int[] kcal = new int[N+1];
-            int[][] dp = new int[N+1][L+1];
-            for(int n=1; n<=N; n++) {
-                StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-                tast[n] = Integer.parseInt(st.nextToken());
-                kcal[n] = Integer.parseInt(st.nextToken());
-            }
-            for(int i=1; i<=N; i++) {
-                for(int j=1; j<=L; j++) {
-                    if (kcal[i] > j) {
-                        dp[i][j] = dp[i-1][j];
-                    }
-                    else {
-                        dp[i][j] = Math.max(dp[i-1][j], dp[i-1][j-kcal[i]]+tast[i]);
-                    }
+            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+            N = Integer.parseInt(st.nextToken());
+            L = Integer.parseInt(st.nextToken());
+            input = new int[N][2];
+            ans = Integer.MIN_VALUE;
+            for(int i=0; i<N; i++) {
+                st = new StringTokenizer(br.readLine(), " ");
+                for(int j=0; j<2; j++) {
+                    input[i][j] = Integer.parseInt(st.nextToken());
                 }
             }
-            sb.append("#").append(tc).append(" ").append(dp[N][L]).append("\n");
+            comb(0,0,0);
+            sb.append("#"+tc+" "+ans+"\n");
         }
-        System.out.println(sb.toString());
-        br.close();
+        System.out.println(sb);
     }
 }
