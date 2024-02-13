@@ -8,16 +8,16 @@ public class Solution_D3_5215_햄버거다이어트_서울_20반_신호준 {
     static int[][] input;
     static int ans;
      
-    static void comb(int cnt, int sum1, int sum2) {
-    	if(sum2>L) return;
+    static void subs(int cnt, int sum1, int sum2) {
+    	if(sum2>=L) return;
         if(cnt==N) {
-        	if(sum1>ans) {
+        	if(ans<sum1) {
         		ans = sum1;
         	}
         	return;
         }
-        comb(cnt+1, sum1+input[cnt][0], sum2+input[cnt][1]);
-        comb(cnt+1, sum1, sum2);
+        subs(cnt+1, sum1+input[cnt][0], sum2+input[cnt][1]);
+        subs(cnt+1, sum1,               sum2);
     }
     public static void main(String[] args) throws Exception {
     	System.setIn(new FileInputStream("res/input_d3_5215.txt"));
@@ -36,7 +36,7 @@ public class Solution_D3_5215_햄버거다이어트_서울_20반_신호준 {
                     input[i][j] = Integer.parseInt(st.nextToken());
                 }
             }
-            comb(0,0,0);
+            subs(0,0,0);
             sb.append("#"+tc+" "+ans+"\n");
         }
         System.out.println(sb);
