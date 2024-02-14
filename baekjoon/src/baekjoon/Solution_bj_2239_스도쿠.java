@@ -6,24 +6,30 @@ import java.util.*;
 public class Solution_bj_2239_스도쿠 {
 	static int[][] arr;
 	static void sudoku(int r, int c) {
-		if(!possible(r,c)) {
+		if(c==9) {
+			sudoku(r+1,0);
+			return;
+		}
+		if(r==9) {
+			for(int i=0; i<9; i++) {
+				for(int j=0; j<9; j++) {
+					System.out.print(arr[i][j]);
+				}
+				System.out.println();
+			}
+			System.exit(0);
+		}
+		if(arr[r][c]==0) {
+			for(int k=1; k<=9; k++) {
+				arr[r][c]=k;
+				if(possible(r,c)) {
+					sudoku(r,c+1);
+				}
+			}
 			arr[r][c]=0;
 			return;
 		}
-		if(done(r,c)) {
-			return;
-		}
-		for(int i=0; i<9; i++) {
-			for(int j=0; j<9; j++) {
-				if(arr[i][j]==0) {
-					for(int k=1; k<=9; k++) {
-						arr[i][j]=k;
-						sudoku(i,j);
-					}
-					if(arr[i][j]==0) return;
-				}
-			}
-		}
+		sudoku(r,c+1);
 	}
 	static boolean possible(int r, int c) {
 		for(int i=0; i<9; i++) {
@@ -44,10 +50,6 @@ public class Solution_bj_2239_스도쿠 {
 		}
 		return true;
 	}
-	static boolean done(int r, int c) {
-		if(r==8&&c==8) return true;
-		return false;
-	}
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
@@ -60,11 +62,5 @@ public class Solution_bj_2239_스도쿠 {
 			}
 		}
 		sudoku(0,0);
-		for(int i=0; i<9; i++) {
-			for(int j=0; j<9; j++) {
-				System.out.print(arr[i][j]);
-			}
-			System.out.println();
-		}
 	}
 }
