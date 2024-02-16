@@ -10,8 +10,8 @@ public class Solution_bj_17135_캐슬디펜스 {
 	static boolean[][] v;
 	static int ans = 0;
 	static int cntEnemy = 0;
-	static int[] di = {0,0,-1,1};
-	static int[] dj = {-1,1,0,0};
+	static int[] di = {0,-1,0,-1};
+	static int[] dj = {-1,0,1,0};
 	static int[][] ach = new int[3][2];
 	static int[] a, b;
 	public static void main(String[] args) throws Exception {
@@ -108,37 +108,55 @@ public class Solution_bj_17135_캐슬디펜스 {
     		i = r;
     		j = c;
     	}
-    	while(!q.isEmpty()) {
+    	A:while(!q.isEmpty()) {
     		int[] ij = q.poll();
     		i = ij[0];
     		j = ij[1];
     		int cnt = ij[2];
-    		if(map[i][j]==1) {
-    			//map[i][j] = 0;
-    			cntEnemy++;
-    			continue;
-    		}
+//    		if(map[i][j]==1) {
+//    			//map[i][j] = 0;
+//    			cntEnemy++;
+//    			continue;
+//    		}
     		if(cnt==D) continue;
     		for(int d=0; d<3; d++) {
     			int ni = i + di[d];
     			int nj = j + dj[d];
     			if(ni>=0&&ni<N&&nj>=0&&nj<M) {
     				if(!v[ni][nj]) {
+    					if(map[ni][nj]==1) {
+    						v[ni][nj] = true;
+    						cntEnemy++;
+    						continue A;
+    					}
     					v[ni][nj] = true;
     					q.offer(new int[] {ni,nj,cnt+1});
     				} else if(v[ni][nj]&&map[ni][nj]==1) {
-    					cntEnemy--;
-    					q.offer(new int[] {ni,nj,cnt+1});
-    				}
+    					continue A;
+    				} continue A;
     			}
     		}
     	}
     }
 }
 /*
-4 4 2
-1 1 1 1
-1 1 1 0
-1 1 0 1
-0 1 0 1
+9 10 4
+1 0 0 1 0 1 0 1 1 0
+0 0 0 1 0 0 0 1 0 0
+0 1 0 0 1 0 0 1 1 1
+0 0 1 1 0 1 0 1 1 0
+0 1 1 0 0 0 0 1 0 1
+0 1 1 1 0 1 0 1 0 0
+0 0 0 0 0 0 0 1 0 0
+1 1 1 1 1 1 1 1 0 1
+0 1 1 0 1 1 0 1 1 0
+ans : 26
+
+5 5 3
+1 1 1 0 1
+0 1 1 0 0
+1 1 1 0 0
+0 1 1 0 0
+1 1 1 0 0
+ans : 13
 */
