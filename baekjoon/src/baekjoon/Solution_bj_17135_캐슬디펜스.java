@@ -12,7 +12,7 @@ public class Solution_bj_17135_캐슬디펜스 {
 	static int cntEnemy = 0;
 	static int[] di = {0,-1,0,-1};
 	static int[] dj = {-1,0,1,0};
-	static int[][] ach = new int[3][2];
+	static int[][] archer = new int[3][2];
 	static int[] a, b;
 	public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -133,7 +133,7 @@ public class Solution_bj_17135_캐슬디펜스 {
     					q.offer(new int[] {ni,nj,cnt+1});
     				} else if(v[ni][nj]&&map[ni][nj]==1) {
     					continue A;
-    				} continue A;
+    				}
     			}
     		}
     	}
