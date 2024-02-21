@@ -4,13 +4,13 @@ import java.io.*;
 import java.util.*;
 
 public class Solution_D9_5653_줄기세포배양_서울_20반_신호준 {
-	private static int n, m, k, nx, ny;
-    private static int[][] map;
-    private static boolean[][] visit;
-    private static Queue<Cell> queue = new LinkedList<>();
-    private static final int[] dx = {0, 0, -1, 1};
-    private static final int[] dy = {-1, 1, 0, 0};
-    private static final short DEATH = 0, ACTIVE = 1, INACTIVE = 2;
+	static int N, M, K, ni, nj;
+    static int[][] map;
+    static boolean[][] v;
+    static Queue<Cell> queue = new ArrayDeque<>();
+    static int[] di = {-1,1,0,0};
+    static int[] dj = {0,0,-1,1};
+    static final short DEATH = 0, ACTIVE = 1, INACTIVE = 2;
 
     public static void main(String[] args) throws Exception {
     	System.setIn(new FileInputStream("res/input_d9_5653.txt"));
@@ -19,54 +19,53 @@ public class Solution_D9_5653_줄기세포배양_서울_20반_신호준 {
 
         int T = Integer.parseInt(br.readLine());
 
-        for (int t = 1; t <= T; t++) {
+        for (int tc=1; tc<=T; tc++) {
             st = new StringTokenizer(br.readLine());
 
-            n = Integer.parseInt(st.nextToken());
-            m = Integer.parseInt(st.nextToken());
-            k = Integer.parseInt(st.nextToken());
-            map = new int[n + k + 2][m + k + 2];
-            visit = new boolean[n + k + 2][m + k + 2];
+            N = Integer.parseInt(st.nextToken());
+            M = Integer.parseInt(st.nextToken());
+            K = Integer.parseInt(st.nextToken());
+            map = new int[N+K+2][M+K+2];
+            v = new boolean[N+K+2][M+K+2];
             queue.clear();
 
             int temp;
-            for (int i = k / 2 + 1; i < n + k / 2 + 1; i++) {
+            for (int i=K/2+1; i<N+K/2+1; i++) {
                 st = new StringTokenizer(br.readLine());
-                for (int j = k / 2 + 1; j < m + k / 2 + 1; j++) {
+                for (int j = K/2+1; j<M+K/2+1; j++) {
                     temp = Integer.parseInt(st.nextToken());
                     if (temp != 0) {
                         map[i][j] = temp;
-                        visit[i][j] = true;
+                        v[i][j] = true;
                         queue.add(new Cell(i, j, temp));
                     }
                 }
             }
-
             int answer = solution();
-            System.out.println("#" + t + " " + answer);
+            System.out.println("#"+tc+" "+answer);
         }
     }
 
     private static int solution() {
-        int count = k;
+        int count = K;
         Cell cell;
-        while (count-- > 0) {
+        while (count-->0) {
             int len = queue.size();
             for (Cell c : queue) {
-                if (c.status == ACTIVE) check(c); // 주변에 세포 value 정해줌
+                if (c.status==ACTIVE) check(c); // 주변에 세포 value 정해줌
             }
 
-            for (int t = 0; t < len; t++) {
+            for (int t=0; t<len; t++) {
                 cell = queue.poll();
-                if (cell.status == ACTIVE) { // 활성화 상태인 경우만 번식
-                    for (int i = 0; i < 4; i++) { // 상하좌우
-                        nx = cell.x + dx[i];
-                        ny = cell.y + dy[i];
+                if (cell.status==ACTIVE) { // 활성화 상태인 경우만 번식
+                    for (int d=0; d<4; d++) { // 상하좌우
+                        ni = cell.i + di[d];
+                        nj = cell.j + dj[d];
 
-                        if (visit[nx][ny]) continue;
+                        if (v[ni][nj]) continue;
 
-                        queue.add(new Cell(nx, ny, map[nx][ny])); // 번식된 세포 추가
-                        visit[nx][ny] = true; // 방문 처리
+                        queue.add(new Cell(ni, nj, map[ni][nj])); // 번식된 세포 추가
+                        v[ni][nj] = true; // 방문 처리
                     }
                 }
 
@@ -80,36 +79,34 @@ public class Solution_D9_5653_줄기세포배양_서울_20반_신호준 {
     }
 
     private static void check(Cell cell) {
-        for (int i = 0; i < 4; i++) {
-            nx = cell.x + dx[i];
-            ny = cell.y + dy[i];
+        for (int i=0; i<4; i++) {
+            ni = cell.i + di[i];
+            nj = cell.j + dj[i];
 
-            if (visit[nx][ny]) continue;
-
-            if (map[nx][ny] < cell.value) map[nx][ny] = cell.value;
+            if (v[ni][nj]) continue;
+            if (map[ni][nj]<cell.value) map[ni][nj] = cell.value;
         }
     }
 
     static class Cell {
-        int x, y;
+        int i, j;
         int value, temp;
         short status;
 
-        public Cell(int x, int y, int value) {
-            this.x = x;
-            this.y = y;
+        public Cell(int i, int j, int value) {
+            this.i = i;
+            this.j = j;
             this.value = value;
             this.temp = value;
             this.status = INACTIVE;
         }
-
         public void next() {
             switch (status) {
                 case INACTIVE: // 비활성화 상태
-                    if (--temp == 0) status = ACTIVE;
+                    if (--temp==0) status = ACTIVE;
                     break;
                 case ACTIVE: // 활성화 상태
-                    if (++temp == value) status = DEATH;
+                    if (++temp==value) status = DEATH;
                     break;
             }
         }
