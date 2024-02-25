@@ -1,7 +1,4 @@
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Queue;
-import java.util.Scanner;
+import java.util.*;
 /*
 7
 8
@@ -45,6 +42,7 @@ public class AdjListTest {
 		}
 		//bfs(adjList,0);
 		dfs(adjList,new boolean[V],0);
+		sc.close();
 	}
 	static void bfs(Node[] adjList, int start) {
 		int V = adjList.length;
