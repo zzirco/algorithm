@@ -1,13 +1,25 @@
 import java.io.*;
 import java.util.*;
 
-public class GraphNodeMain {
+public class GraphNodeMain2 {
 	static int N;
 	static Node[] g;
 	static boolean[] v;
-	
-	public static void main(String[] args) throws Exception {
-		System.setIn(new FileInputStream("res/graph_input2.txt"));
+	static class Node {
+		int vertex;
+		Node link;
+		public Node(int vertex, Node link) {
+			super();
+			this.vertex = vertex;
+			this.link = link;
+		}
+		@Override
+		public String toString() {
+			return "Node [vertex=" + vertex + ", link=" + link + "]";
+		}
+		
+	}
+	public static void main(String[] arsg) throws Exception {
 		Scanner sc = new Scanner(System.in);
 		N = sc.nextInt();
 		int E = sc.nextInt();
@@ -16,52 +28,37 @@ public class GraphNodeMain {
 		for(int i=0; i<E; i++) {
 			int from = sc.nextInt();
 			int to = sc.nextInt();
-			g[from] = new Node(to, g[from]);
-			g[to] = new Node(from, g[to]);
+			g[from] = new Node(to, g[to]);
+			g[to] = new Node(from, g[from]);
 		}
-		for(Node a:g) System.out.println(a); System.out.println();
-		//for(int i=0; i<N; i++) System.out.println((char)(i+'A')+""+i+": "+g[i]); System.out.println();
 		bfs(0);
 		v = new boolean[N];
 		System.out.println();
 		dfs(0);
-		sc.close();
 	}
-	static void bfs(int i) {
+	private static void bfs(int i) {
 		ArrayDeque<Integer> q = new ArrayDeque<>();
-		v[i]=true;
 		q.offer(i);
+		v[i] = true;
 		while(!q.isEmpty()) {
 			i = q.poll();
 			System.out.print((char)(i+'A')+" ");
-			for(Node j=g[i]; j!=null; j=j.link) {// 0->N
+			for(Node j=g[i]; j!=null; j=j.link) {
 				if(!v[j.vertex]) {
-					v[j.vertex]=true;
+					v[j.vertex] = true;
 					q.offer(j.vertex);
 				}
 			}
 		}
 	}
-	static void dfs(int i) {
+	private static void dfs(int i) {
 		v[i] = true;
 		System.out.print((char)(i+'A')+" ");
-		for(Node j=g[i]; j!=null; j=j.link) {// 0->N
+		for(Node j=g[i]; j!=null; j=j.link) {
 			if(!v[j.vertex]) {
+				v[j.vertex] = true;
 				dfs(j.vertex);
 			}
-		}
-	}
-	static class Node {
-		int vertex;
-		Node link;
-		Node(int vertex, Node link) {
-			this.vertex = vertex;
-			this.link = link;
-		}
-		@Override
-		public String toString() {
-			//return vertex+"->"+link;
-			return (char)(vertex+'A')+""+vertex+"->"+link;
 		}
 	}
 }
@@ -91,7 +88,4 @@ A C E F G D B : N->0
 =bfs=========
 A B C D E F G : 0->N
 A C B E D F G : N->0
-
-A C E B F D G 
-A C E F G D B 
 */

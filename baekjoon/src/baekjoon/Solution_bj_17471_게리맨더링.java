@@ -29,7 +29,8 @@ public class Solution_bj_17471_게리맨더링 {
 		for(int i=1; i<=N; i++) {
 			st = new StringTokenizer(br.readLine(), " ");
 			int from = i;
-			while(st.hasMoreTokens()) {
+			int num = Integer.parseInt(st.nextToken());
+			for(int j=0; j<num; j++) {
 				int to = Integer.parseInt(st.nextToken());
 				g[from] = new Node(to, g[from]);
 				g[to] = new Node(from, g[to]);
@@ -40,7 +41,8 @@ public class Solution_bj_17471_게리맨더링 {
 			b = new int[R];
 			comb(0,0);
 		}
-		System.out.println(ans);
+		if(ans==Integer.MAX_VALUE) System.out.println(-1);
+		else System.out.println(ans);
 	}
 	static void comb(int cnt, int start) {
 		if(cnt==R) {
@@ -56,18 +58,21 @@ public class Solution_bj_17471_게리맨더링 {
 			}
 			//System.out.println("b : "+Arrays.toString(b));
 			//System.out.println("c : "+Arrays.toString(c));
-			bfs(b[0]);
-			bfs(c[0]);
+			bfs(b[0],b);
+			bfs(c[0],c);
 			int bp = 0, cp = 0;
-			for(int item:b) {
-				if(!v[item]) return;
-				else bp += population[item];
+			boolean isOk = true;
+			for(int i=1; i<=N; i++) {
+				if(!v[i]) {
+					isOk = false;
+					break;
+				}
 			}
-			for(int item:c) {
-				if(!v[item]) return;
-				else cp += population[item];
+			if(isOk) {
+				for(int item:b) bp += population[item];
+				for(int item:c) cp += population[item];
+				ans = Math.min(ans, Math.abs(bp-cp));
 			}
-			ans = Math.min(ans, Math.abs(bp-cp));
 			return;
 		}
 		for(int i=start; i<N; i++) {
@@ -75,16 +80,18 @@ public class Solution_bj_17471_게리맨더링 {
 			comb(cnt+1, i+1);
 		}
 	}
-	static void bfs(int i) {
+	static void bfs(int i, int[] ia) {
 		ArrayDeque<Integer> q = new ArrayDeque<>();
-		v[i]=true;
 		q.offer(i);
+		v[i]=true;
 		while(!q.isEmpty()) {
 			i = q.poll();
 			for(Node j=g[i]; j!=null; j=j.link) {
-				if(!v[j.vertex]) {
-					v[j.vertex]=true;
-					q.offer(j.vertex);
+				for(int item:ia) {
+					if(j.vertex==item&&!v[j.vertex]) {
+						v[j.vertex]=true;
+						q.offer(j.vertex);
+					}
 				}
 			}
 		}

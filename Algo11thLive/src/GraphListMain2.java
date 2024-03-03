@@ -1,52 +1,50 @@
 import java.io.*;
 import java.util.*;
 
-public class GraphMatrixMain {
+public class GraphListMain2 {
 	static int N;
-	static int[][] g;
+	static ArrayList<Integer>[] g;
 	static boolean[] v;
-	
 	public static void main(String[] args) throws Exception {
 		Scanner sc = new Scanner(System.in);
 		N = sc.nextInt();
 		int E = sc.nextInt();
-		g = new int[N][N];
+		g = new ArrayList[N];
+		for(int i=0; i<N; i++) g[i] = new ArrayList<>();
 		v = new boolean[N];
 		for(int i=0; i<E; i++) {
 			int from = sc.nextInt();
 			int to = sc.nextInt();
-			g[from][to] = g[to][from] = 1;
+			g[from].add(to);
+			g[to].add(from);
 		}
-		for(int[] a:g) System.out.println(Arrays.toString(a)); System.out.println();
 		bfs(0);
 		v = new boolean[N];
 		System.out.println();
 		dfs(0);
-		sc.close();
 	}
-	static void bfs(int i) {
+	private static void bfs(int i) {
 		ArrayDeque<Integer> q = new ArrayDeque<>();
-		v[i]=true;
 		q.offer(i);
+		v[i] = true;
 		while(!q.isEmpty()) {
 			i = q.poll();
 			System.out.print((char)(i+'A')+" ");
-			//for(int j=N-1; j>=0; j--) {// N->0
-			for(int j=0; j<N; j++) {// 0->N
-				if(g[i][j]!=0&&!v[j]) {
-					v[j]=true;
-					q.offer(j);
+			for(int vertex:g[i]) {
+				if(!v[vertex]) {
+					v[vertex] = true;
+					q.offer(vertex);
 				}
 			}
 		}
 	}
-	static void dfs(int i) {
+	private static void dfs(int i) {
 		v[i] = true;
 		System.out.print((char)(i+'A')+" ");
-		//for(int j=N-1; j>=0; j--) {// N->0
-		for(int j=0; j<N; j++) {// 0->N
-			if(g[i][j]!=0&&!v[j]) {
-				dfs(j);
+		for(int vertex:g[i]) {
+			if(!v[vertex]) {
+				v[vertex] = true;
+				dfs(vertex);
 			}
 		}
 	}
@@ -71,10 +69,10 @@ D3..E4
 4 5
 5 6
 
-=bfs=========
-A B C D E F G : 0->N
-A C B E D F G : N->0
 =dfs=========
 A B D F E C G : 0->N
 A C E F G D B : N->0
+=bfs=========
+A B C D E F G : 0->N
+A C B E D F G : N->0
 */

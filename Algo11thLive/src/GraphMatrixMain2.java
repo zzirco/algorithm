@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class GraphMatrixMain {
+public class GraphMatrixMain2 {
 	static int N;
 	static int[][] g;
 	static boolean[] v;
@@ -17,35 +17,33 @@ public class GraphMatrixMain {
 			int to = sc.nextInt();
 			g[from][to] = g[to][from] = 1;
 		}
-		for(int[] a:g) System.out.println(Arrays.toString(a)); System.out.println();
 		bfs(0);
 		v = new boolean[N];
 		System.out.println();
 		dfs(0);
 		sc.close();
 	}
-	static void bfs(int i) {
-		ArrayDeque<Integer> q = new ArrayDeque<>();
-		v[i]=true;
+	private static void bfs(int i) {
+		Queue<Integer> q = new ArrayDeque<>();
 		q.offer(i);
+		v[i] = true;
 		while(!q.isEmpty()) {
 			i = q.poll();
 			System.out.print((char)(i+'A')+" ");
-			//for(int j=N-1; j>=0; j--) {// N->0
-			for(int j=0; j<N; j++) {// 0->N
+			for(int j=0; j<N; j++) {
 				if(g[i][j]!=0&&!v[j]) {
-					v[j]=true;
+					v[j] = true;
 					q.offer(j);
 				}
 			}
 		}
 	}
-	static void dfs(int i) {
+	private static void dfs(int i) {
 		v[i] = true;
 		System.out.print((char)(i+'A')+" ");
-		//for(int j=N-1; j>=0; j--) {// N->0
-		for(int j=0; j<N; j++) {// 0->N
+		for(int j=0; j<N; j++) {
 			if(g[i][j]!=0&&!v[j]) {
+				v[j] = true;
 				dfs(j);
 			}
 		}

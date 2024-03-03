@@ -40,7 +40,7 @@ public class Solution_bj_1600_말이되고픈원숭이 {
 				int ni = i + hdi[d];
 				int nj = j + hdj[d];
 				if(ni>=0&&ni<N&&nj>=0&&nj<M&&arr[ni][nj]==0) {
-					if(!v[ni][nj][hCnt]&&hCnt<K) {
+					if(hCnt<K&&!v[ni][nj][hCnt+1]) {
 						v[ni][nj][hCnt+1] = true;
 						q.offer(new int[] {ni,nj,cnt+1,hCnt+1});
 					}
