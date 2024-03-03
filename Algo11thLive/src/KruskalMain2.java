@@ -14,10 +14,10 @@ public class KruskalMain2 {
 		return p[a] = find(p[a]);
 	}
 	static boolean union(int a, int b) {
-		a = find(a);
-		b = find(b);
-		if(a==b) return false;
-		p[b] = a;
+		int aRoot = find(a);
+		int bRoot = find(b);
+		if(aRoot==bRoot) return false;
+		p[bRoot] = aRoot;
 		return true;
 	}
 	public static void main(String[] args) throws Exception {
@@ -31,13 +31,13 @@ public class KruskalMain2 {
 			int weight = sc.nextInt();
 			g[i] = new int[] {from,to,weight};
 		}
-		int result = 0, cnt = 0;
 		Arrays.sort(g,(o1,o2)->Integer.compare(o1[2], o2[2]));
 		make();
+		int result = 0, cnt = 0;
 		for(int[] edge:g) {
 			if(union(edge[0],edge[1])) {
 				result += edge[2];
-				if(cnt++==N-1) break;
+				if(++cnt==N-1) break;
 			}
 		}
 		System.out.println(result);
