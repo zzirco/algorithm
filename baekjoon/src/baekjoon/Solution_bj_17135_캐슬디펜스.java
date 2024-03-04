@@ -165,7 +165,6 @@ public class Solution_bj_17135_캐슬디펜스 {
 									q.pollLast();
 								}
     						}
-    						continue A;
     					}
     					// 탐색 위치에 적이 없다면 방문 처리하고, 해당 위치부터 재탐색
     					v[ni][nj] = true;
