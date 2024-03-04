@@ -47,10 +47,11 @@ public class Solution_bj_17135_캐슬디펜스 {
 	    	}
 			int[] copy = new int[3];
 			copy = b.clone();
+			cntEnemy = 0;
 			operate(copy);
 			// 캐슬 디펜스 실행 후 결과 갱신
 			ans = Math.max(ans, cntEnemy);
-			cntEnemy = 0;
+			
 			// 해당 조합 수행 후 맵 원상복귀
 			for(int i=0; i<N+1; i++) {
 				map[i] = mapCopy[i].clone();
@@ -67,13 +68,24 @@ public class Solution_bj_17135_캐슬디펜스 {
 		while(!isDone()) {
 			// 사격 수행 후 사격한 위치 0으로 변경
 			shot(b);
-			for(int i=0; i<N; i++) {
-				for(int j=0; j<M; j++) {
-					if(v[i][j]) map[i][j] = 0;
-				}
-			}
+			zero();
 			// 사격 수행 후 적 이동 수행
 			move();
+			for(int i=0; i<N; i++) {
+	    		for(int j=0; j<M; j++) {
+	    			System.out.print(map[i][j]);
+	    		}
+	    		System.out.println();
+	    	}
+			System.out.println(Arrays.toString(b));
+			System.out.println("cntEnemy : "+cntEnemy);
+		}
+	}
+	static void zero() {
+		for(int i=0; i<N; i++) {
+			for(int j=0; j<M; j++) {
+				if(v[i][j]) map[i][j] = 0;
+			}
 		}
 	}
 	static boolean isDone() {
@@ -104,13 +116,13 @@ public class Solution_bj_17135_캐슬디펜스 {
     // 궁수로부터 제한 거리까지 탐색하면서 가장 가까운 적 사살. 만약 가장 가까운 적이 여러명이면 왼쪽부터 사살.
     static void bfs(int[] b, int cnt) {
     	int i, j;
-    	Queue<int[]> q = new ArrayDeque<>();
+    	ArrayDeque<int[]> q = new ArrayDeque<>();
     	// 처음 궁수 위치 큐에 삽입
     	for(int k=0; k<3; k++) {
     		int r = N;
     		int c = b[k];
     		v[r][c] = true;
-    		q.offer(new int[] {r,c,0});
+    		q.offer(new int[] {r,c,0,k});
     		i = r;
     		j = c;
     	}
@@ -120,6 +132,7 @@ public class Solution_bj_17135_캐슬디펜스 {
     		i = ij[0];
     		j = ij[1];
     		cnt = ij[2];
+    		int num = ij[3];
 //    		if(map[i][j]==1) {
 //    			//map[i][j] = 0;
 //    			cntEnemy++;
@@ -128,8 +141,8 @@ public class Solution_bj_17135_캐슬디펜스 {
     		// 만약 궁수로부터 거리가 제한거리와 같다면 다음 위치 탐색
     		if(cnt==D) continue;
     		// 왼쪽부터 탐색하면서
+    		int size = q.size();
     		for(int d=0; d<3; d++) {
-    			int count = 0;
     			int ni = i + di[d];
     			int nj = j + dj[d];
     			// 탐색 위치가 인덱스 범위 내 이면
@@ -141,16 +154,29 @@ public class Solution_bj_17135_캐슬디펜스 {
     						v[ni][nj] = true;
     						cntEnemy++;
     						//적을 사살 했으므로 해당 분기의 다른 방향 탐색 제거
-    						for(int idx=0; idx<count; idx++) {
-    							q.poll();
+							while(true) {
+								for(int[] cur:q) {
+									if(cur[3]==num) {
+										break;
+									}
+								}
+								int[] cur = q.peek();
+								if(cur[3]==num) {
+									q.pollLast();
+								}
     						}
     						continue A;
     					}
     					// 탐색 위치에 적이 없다면 방문 처리하고, 해당 위치부터 재탐색
-    					count++;
     					v[ni][nj] = true;
-    					q.offer(new int[] {ni,nj,cnt+1});
+    					q.offer(new int[] {ni,nj,cnt+1,num});
     				} else if(v[ni][nj]&&map[ni][nj]==1) { // 탐색 위치에 적이 있지만 이미 방문 했을 때는 다음 궁수 탐색
+    					for(int k=q.size()-1; k>=0; k--) {
+							int[] cur = q.peek();
+							if(cur[3]==num) {
+								q.pollLast();
+							}
+						}
     					continue A;
     				}
     			}
