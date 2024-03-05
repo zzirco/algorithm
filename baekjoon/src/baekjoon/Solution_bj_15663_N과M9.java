@@ -6,24 +6,24 @@ import java.util.*;
 public class Solution_bj_15663_N과M9 {
 	static int N, M;
 	static int[] a, b;
-	static LinkedHashSet<Integer> lhs;
+	static boolean[] v;
+	static LinkedHashSet<String> list = new LinkedHashSet<>();
 	static StringBuilder sb = new StringBuilder();
-	static void comb(int cnt, int start) {
+	static void perm(int cnt) {
 		if(cnt==M) {
-			lhs = new LinkedHashSet<>();
+			String s = "";
 			for(int i:b) {
-				lhs.add(i);
+				s += i+" ";
 			}
-			System.out.println("lhs:"+lhs);
-			for(int i:lhs) {
-				sb.append(i+" ");
-			}
-			sb.append("\n");
+			list.add(s);
 			return;
 		}
-		for(int i=start; i<N; i++) {
+		for(int i=0; i<N; i++) {
+			if(v[i]) continue;
+			v[i] = true;
 			b[cnt] = a[i];
-			comb(cnt+1,i+1);
+			perm(cnt+1);
+			v[i] = false;
 		}
 	}
 	public static void main(String[] args) throws Exception {
@@ -33,12 +33,16 @@ public class Solution_bj_15663_N과M9 {
 		M = Integer.parseInt(st.nextToken());
 		a = new int[N];
 		b = new int[M];
-		lhs = new LinkedHashSet<>();
+		v = new boolean[N];
 		st = new StringTokenizer(br.readLine(), " ");
 		for(int i=0; i<N; i++) {
 			a[i] = Integer.parseInt(st.nextToken());
 		}
-		comb(0,0);
+		Arrays.sort(a);
+		perm(0);
+		for(String s:list) {
+			System.out.println(s);
+		}
 		System.out.println(sb);
 	}
 }

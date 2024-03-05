@@ -7,7 +7,6 @@ public class Solution_bj_17143_낚시왕 {
 	static int R, C;
 	static int[] di = {-1,1,0,0};
 	static int[] dj = {0,0,1,-1};
-	static int[][] map;
 	static ArrayList<Shark> shark;
 	static int ans;
 	static void solution() {
@@ -39,6 +38,11 @@ public class Solution_bj_17143_낚시왕 {
 			int c = s.c;
 			int speed = s.s;
 			int d = s.d;
+			if(d==0||d==1) {
+				speed %= (R-1)*2;
+			} else {
+				speed %= (C-1)*2;
+			}
 			// 상어 이동
 			for(int cnt=0; cnt<speed; cnt++) {
 				int nr = r + di[d];
@@ -58,33 +62,21 @@ public class Solution_bj_17143_낚시왕 {
 			s.r = r;
 			s.c = c;
 			s.d = d;
-			// 이동 후 위치 1로 초기화
-			//map[r][c] = 1;
+			s.index = r*C+c;
 		}
 	}
 	static void eat() {
-		// 만약 이동이 끝난 위치에 다른 상어가 있다면
-		int size = shark.size();
-		for(int k=0; k<size; k++) {
-			Shark s = shark.get(k);
-			for(int i=0; i<size; i++) {
-				Shark cmp = shark.get(i);
-				if(s.r==cmp.r&&s.c==cmp.c&&s.z!=cmp.z) { // 자신을 제외하고 크기 비교 후 작은 상어 리스트에서 삭제
-					if(s.z>cmp.z) {
-						shark.remove(cmp);
-						size--;
-						i--;
-					} else {
-						shark.remove(s);
-						size--;
-						i--;
-					}
-				}
+		Collections.sort(shark);
+		for(int i=shark.size()-1; i>0; i--) {
+			Shark cur = shark.get(i);
+			Shark prev = shark.get(i-1);
+			if(cur.index==prev.index) {
+				shark.remove(cur);
 			}
 		}
 	}
-	static class Shark {
-		int r, c, s, d, z;
+	static class Shark implements Comparable<Shark> {
+		int r, c, s, d, z, index;
 		public Shark(int r, int c, int s, int d, int z) {
 			super();
 			this.r = r;
@@ -92,10 +84,15 @@ public class Solution_bj_17143_낚시왕 {
 			this.s = s;
 			this.d = d;
 			this.z = z;
+			this.index = r*C+c;
 		}
 		@Override
 		public String toString() {
-			return "Shark [r=" + r + ", c=" + c + ", s=" + s + ", d=" + d + ", z=" + z + "]";
+			return "Shark [r=" + r + ", c=" + c + ", s=" + s + ", d=" + d + ", z=" + z + ", index=" + index + "]";
+		}
+		@Override
+		public int compareTo(Shark o) {
+			return (this.index==o.index)?Integer.compare(o.z, this.z):Integer.compare(this.index, o.index);
 		}
 	}
 	public static void main(String[] args) throws Exception {
@@ -104,7 +101,6 @@ public class Solution_bj_17143_낚시왕 {
 		R = Integer.parseInt(st.nextToken());
 		C = Integer.parseInt(st.nextToken());
 		int M = Integer.parseInt(st.nextToken());
-		map = new int[R][C];
 		shark = new ArrayList<>();
 		ans = 0;
 		for(int i=0; i<M; i++) {
@@ -115,7 +111,6 @@ public class Solution_bj_17143_낚시왕 {
 			int d = Integer.parseInt(st.nextToken())-1;
 			int z = Integer.parseInt(st.nextToken());
 			shark.add(new Shark(r,c,s,d,z));
-			map[r][c] = 1;
 		}
 		solution();
 		System.out.println(ans);
