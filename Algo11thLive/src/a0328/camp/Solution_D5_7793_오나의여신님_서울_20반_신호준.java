@@ -4,45 +4,83 @@ import java.io.*;
 import java.util.*;
 
 public class Solution_D5_7793_오나의여신님_서울_20반_신호준 {
-	static int si, sj, ei, ej;
-	static int[] di = {-1,1,0,0};
-	static int[] dj = {0,0,-1,1};
-	static int N, M;
-	static char[][] map;
+	static final int[] di = {-1,1,0,0};
+	static final int[] dj = {0,0,-1,1};
+	static int N, M, ans;
 	static boolean[][] v;
-	public static void bfs(int i, int j, int cnt) {
-		Queue<int[]> q = new ArrayDeque<>();
-		
+	static char[][] map;
+	static Queue<Pair> q;
+	static Queue<Pair> dq;
+	static class Pair{
+		int i, j, cnt;
+		public Pair(int i, int j, int cnt) {
+			this.i = i;
+			this.j = j;
+			this.cnt = cnt;
+		}
 	}
-	public static void main(String[] args) throws Exception {
-		System.setIn(new FileInputStream("res/input_d6_1263.txt"));
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
-		int T = Integer.parseInt(br.readLine());
-		for(int tc=1; tc<=T; tc++) {
-			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-			N = Integer.parseInt(st.nextToken());
-			M = Integer.parseInt(st.nextToken());
-			map = new char[N][M];
-			v = new boolean[N][M];
-			for(int i=0; i<N; i++) {
-				map[i] =  st.nextToken().toCharArray();
-			}
-			for(int i=0; i<N; i++) {
-				for(int j=0; j<N; j++) {
-					if(map[i][j]=='S') {
-						si = i;
-						sj = j;
-					} else if(map[i][j]=='D') {
-						ei = i;
-						ej = j;
+	public static void bfs() {
+		int size = 0;
+		while(!q.isEmpty()) {
+			size = dq.size();
+			for (int i=0; i<size; i++) {
+				Pair p = dq.poll();
+				for (int d=0; d<4; d++) {
+					int ni = p.i + di[d];
+					int nj = p.j + dj[d];
+					if((ni<0||ni>=N||nj<0||nj>=M)) continue;
+					if(map[ni][nj]=='.'||map[ni][nj]=='S') {
+						map[ni][nj] = '*';
+						dq.offer(new Pair(ni,nj,p.cnt+1));
 					}
 				}
 			}
-			bfs(si,sj,0);
-			sb.append("#"+tc+" "+"\n");
+			size = q.size();
+			for (int i=0; i<size; i++) {
+				Pair p = q.poll();
+				for (int d=0; d<4; d++) {
+					int nx = p.i + di[d];
+					int ny = p.j + dj[d];
+					if((nx<0||nx>=N||ny<0||ny>=M)) continue;
+					if(map[nx][ny]=='D') {
+						ans = p.cnt+1;
+						return;
+					}
+					if(map[nx][ny] == '.') {
+						map[nx][ny] = 'S';
+						q.offer(new Pair(nx,ny,p.cnt+1));
+					}
+				}
+			}
+		}
+	}
+	public static void main(String[] args) throws Exception {
+		System.setIn(new FileInputStream("res/input_d5_7793.txt"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		int T = Integer.parseInt(br.readLine());
+		for (int tc=1; tc<=T; tc++) {
+			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+			N = Integer.parseInt(st.nextToken());
+			M = Integer.parseInt(st.nextToken());
+			ans = 0;
+			map = new char[N][M];
+			v = new boolean[N][M];
+			q = new ArrayDeque<>();
+			dq = new ArrayDeque<>();
+			for (int i=0; i<N; i++) {
+				map[i] = br.readLine().toCharArray();
+				for (int j = 0; j < M; j++) {
+					if(map[i][j]=='*') dq.offer(new Pair(i,j,0));
+					else if(map[i][j]=='S') q.offer(new Pair(i,j,0));
+				}
+			}
+			bfs();
+			String s = ans==0?"GAME OVER":""+ans;
+			sb.append("#"+tc+" "+s+"\n");
 		}
 		System.out.println(sb);
 		br.close();
 	}
 }
+
