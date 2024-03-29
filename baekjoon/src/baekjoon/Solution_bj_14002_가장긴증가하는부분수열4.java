@@ -1,9 +1,10 @@
 package baekjoon;
 
+import java.awt.Point;
 import java.io.*;
 import java.util.*;
 
-public class Solution_bj_11053_가장긴증가하는부분수열 {
+public class Solution_bj_14002_가장긴증가하는부분수열4 {
 	static int N;
 	static int[] arr;
 	static List<Integer> list = new ArrayList<>();
@@ -17,6 +18,7 @@ public class Solution_bj_11053_가장긴증가하는부분수열 {
 	}
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
 		N = Integer.parseInt(br.readLine());
 		arr = new int[N];
 		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
@@ -32,6 +34,10 @@ public class Solution_bj_11053_가장긴증가하는부분수열 {
 			int idx = binarySearch(0, list.size()-1, arr[i]);
 			list.set(idx, arr[i]);
 		}
-		System.out.println(list.size());
+		sb.append(list.size()+"\n");
+		for(int i=0; i<list.size(); i++) {
+			sb.append(list.get(i)+" ");
+		}
+		System.out.println(sb);
 	}
 }

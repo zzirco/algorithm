@@ -3,7 +3,7 @@ package baekjoon;
 import java.io.*;
 import java.util.*;
 
-public class Solution_bj_11053_가장긴증가하는부분수열 {
+public class Solution_bj_12738_가장긴증가하는부분수열3 {
 	static int N;
 	static int[] arr;
 	static List<Integer> list = new ArrayList<>();
