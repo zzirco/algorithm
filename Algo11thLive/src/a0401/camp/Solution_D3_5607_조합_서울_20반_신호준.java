@@ -1,4 +1,4 @@
-package a0401;
+package a0401.camp;
 
 import java.io.*;
 import java.util.*;
