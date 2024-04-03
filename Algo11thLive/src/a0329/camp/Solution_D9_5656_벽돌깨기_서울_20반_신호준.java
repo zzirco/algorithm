@@ -10,7 +10,7 @@ public class Solution_D9_5656_벽돌깨기_서울_20반_신호준 {
     static boolean vis[][];
  
     public static void main(String[] args) throws Exception {
-        System.setIn(new FileInputStream("res/sample_input.txt"));
+        System.setIn(new FileInputStream("res/input_d9_5656.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
         StringBuilder sb = new StringBuilder();
