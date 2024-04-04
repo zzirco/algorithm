@@ -20,7 +20,7 @@ public class Solution_bj_2567_색종이2 {
 			for(int d=0; d<4; d++) {
 				int ni = i + di[d];
 				int nj = j + dj[d];
-				if(ni>=0&&ni<100&&nj>=0&&nj<100&&!v[ni][nj]) {
+				if(ni>=0&&ni<102&&nj>=0&&nj<102&&!v[ni][nj]) {
 					if(a[ni][nj]==1) {
 						ans++;
 						continue;
@@ -35,8 +35,8 @@ public class Solution_bj_2567_색종이2 {
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
-		a = new int[100][100];
-		v = new boolean[100][100];
+		a = new int[102][102];
+		v = new boolean[102][102];
 		ans = 0;
 		for(int k=0; k<N; k++) {
 			StringTokenizer st = new StringTokenizer(br.readLine(), " ");
@@ -44,12 +44,12 @@ public class Solution_bj_2567_색종이2 {
 			int x = Integer.parseInt(st.nextToken());
 			for(int i=0; i<10; i++) {
 				for(int j=0; j<10; j++) {
-					a[99-x-i][y+j-1] = 1;
+					a[100-x-i][y+j] = 1;
 				}
 			}
 		}
-		for(int i=0; i<100; i++) {
-			for(int j=0; j<100; j++) {
+		for(int i=1; i<101; i++) {
+			for(int j=1; j<101; j++) {
 				if(a[i][j]==0&!v[i][j])
 					bfs(i,j);
 			}
