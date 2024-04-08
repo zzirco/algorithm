@@ -1,6 +1,5 @@
 package baekjoon;
 
-import java.awt.Point;
 import java.io.*;
 import java.util.*;
 

@@ -14,6 +14,23 @@ public class Solution_bj_17135_캐슬디펜스 {
 	static int[] dj = {-1,0,1};
 	static int[][] archer = new int[3][2];
 	static int[] a, b;
+	static class Node {
+    	int i;
+    	int j;
+    	int cnt;
+    	int num;
+		public Node(int i, int j, int cnt, int num) {
+			super();
+			this.i = i;
+			this.j = j;
+			this.cnt = cnt;
+			this.num = num;
+		}
+		@Override
+		public String toString() {
+			return "Node [i=" + i + ", j=" + j + ", cnt=" + cnt + ", num=" + num + "]";
+		}
+    }
 	public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     	StringTokenizer st = new StringTokenizer(br.readLine(), " ");
@@ -45,6 +62,9 @@ public class Solution_bj_17135_캐슬디펜스 {
 	    	for(int i=0; i<N+1; i++) {
 	    		mapCopy[i] = map[i].clone();
 	    	}
+	    	for(int item:b) {
+	    		map[N][item] = 7;
+	    	}
 			int[] copy = new int[3];
 			copy = b.clone();
 			cntEnemy = 0;
@@ -66,26 +86,20 @@ public class Solution_bj_17135_캐슬디펜스 {
 	static void operate(int[] b) {
 		// 아직 적이 남아있다면 사격과 적 이동 반복
 		while(!isDone()) {
+//			for(int i=0; i<N+1; i++) {
+//				for(int j=0; j<M; j++) {
+//					System.out.print(map[i][j]);
+//				}
+//				System.out.println();
+//			}
 			// 사격 수행 후 사격한 위치 0으로 변경
 			shot(b);
 			zero();
 			// 사격 수행 후 적 이동 수행
 			move();
-			for(int i=0; i<N; i++) {
-	    		for(int j=0; j<M; j++) {
-	    			System.out.print(map[i][j]);
-	    		}
-	    		System.out.println();
-	    	}
-			System.out.println(Arrays.toString(b));
-			System.out.println("cntEnemy : "+cntEnemy);
-		}
-	}
-	static void zero() {
-		for(int i=0; i<N; i++) {
-			for(int j=0; j<M; j++) {
-				if(v[i][j]) map[i][j] = 0;
-			}
+//			System.out.println(Arrays.toString(b));
+//			System.out.println("cntEnemy : "+cntEnemy);
+//			System.out.println();
 		}
 	}
 	static boolean isDone() {
@@ -97,9 +111,16 @@ public class Solution_bj_17135_캐슬디펜스 {
 		return true;
 	}
 	static void shot(int[] b) {
-	// 사격 수행 마다 방문 배열 초기화 후 bfs 수행
+		// 사격 수행 마다 방문 배열 초기화 후 bfs 수행
 		v = new boolean[N+1][M];
 		bfs(b,0);
+	}
+	static void zero() {
+		for(int i=0; i<N; i++) {
+			for(int j=0; j<M; j++) {
+				if(v[i][j]) map[i][j] = 0;
+			}
+		}
 	}
     static void move() {
     	for(int i=N-1; i>=0; i--) {
@@ -112,23 +133,6 @@ public class Solution_bj_17135_캐슬디펜스 {
     			}
     		}
     	}
-    }
-    static class Node {
-    	int i;
-    	int j;
-    	int cnt;
-    	int num;
-		public Node(int i, int j, int cnt, int num) {
-			super();
-			this.i = i;
-			this.j = j;
-			this.cnt = cnt;
-			this.num = num;
-		}
-		@Override
-		public String toString() {
-			return "Node [i=" + i + ", j=" + j + ", cnt=" + cnt + ", num=" + num + "]";
-		}
     }
     // 궁수로부터 제한 거리까지 탐색하면서 가장 가까운 적 사살. 만약 가장 가까운 적이 여러명이면 왼쪽부터 사살.
     static void bfs(int[] b, int cnt) {
@@ -164,42 +168,23 @@ public class Solution_bj_17135_캐슬디펜스 {
     					if(map[ni][nj]==1) {
     						v[ni][nj] = true;
     						cntEnemy++;
-    						//적을 사살 했으므로 해당 분기의 다른 방향 탐색 제거
-    						boolean Done = true;
-							while(true) {
-								for(Node cur:q) {
-									if(cur.num==num) {
-										Done = false;
-										break;
-									}
-								}
-								if(Done) break;
-								for(Node cur:q) {
-									if(cur.num==num) {
-										q.remove(cur);
-									}
-								}
+    						ArrayDeque<Node> removelist = new ArrayDeque<>();
+    						for(Node n:q) {
+    							if(n.num==num) removelist.add(n);
     						}
+    						q.removeAll(removelist);
+    						continue A;
+    					} else { // 탐색 위치에 적이 없다면 방문 처리하고, 해당 위치부터 재탐색
+    						v[ni][nj] = true;
+    						q.offer(new Node(ni,nj,cnt+1,num));
     					}
-    					// 탐색 위치에 적이 없다면 방문 처리하고, 해당 위치부터 재탐색
-    					v[ni][nj] = true;
-    					q.offer(new Node(ni,nj,cnt+1,num));
     				} else if(v[ni][nj]&&map[ni][nj]==1) { // 탐색 위치에 적이 있지만 이미 방문 했을 때는 다음 궁수 탐색
-    					boolean Done = true;
-						while(true) {
-							for(Node cur:q) {
-								if(cur.num==num) {
-									Done = false;
-									break;
-								}
-							}
-							if(Done) break;
-							for(Node cur:q) {
-								if(cur.num==num) {
-									q.remove(cur);
-								}
-							}
+    					ArrayDeque<Node> removelist = new ArrayDeque<>();
+						for(Node n:q) {
+							if(n.num==num) removelist.add(n);
 						}
+						q.removeAll(removelist);
+						continue A;
     				}
     			}
     		}
