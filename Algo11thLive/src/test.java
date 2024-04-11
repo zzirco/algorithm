@@ -1,27 +1,24 @@
 import java.io.*;
 import java.util.*;
 
-public class DijkstraMain2 {
+public class test {
 	public static void main(String[] args) throws Exception {
 		Scanner sc = new Scanner(System.in);
 		int N = sc.nextInt();
-		int S = sc.nextInt();
-		int E = sc.nextInt();
 		int[][] g = new int[N][N];
-		int[] dist = new int[N];
 		boolean[] v = new boolean[N];
-		
+		int[] dist = new int[N];
 		for(int i=0; i<N; i++) {
 			for(int j=0; j<N; j++) {
 				g[i][j] = sc.nextInt();
 			}
 			dist[i] = Integer.MAX_VALUE;
 		}
-		dist[S] = 0;
-		PriorityQueue<int[]> pq = new PriorityQueue<>((o1,o2)->Integer.compare(o1[1], o2[1]));
-		pq.offer(new int[] {S,dist[S]});
-		while(!pq.isEmpty()) {
-			int[] cur = pq.poll();
+		PriorityQueue<int[]> q = new PriorityQueue<>((o1,o2)->Integer.compare(o1[1], o2[1]));
+		dist[0] = 0;
+		q.offer(new int[] {0,dist[0]});
+		while(!q.isEmpty()) {
+			int[] cur = q.poll();
 			int minVertex = cur[0];
 			int min = cur[1];
 			if(v[minVertex]) continue;
@@ -30,7 +27,7 @@ public class DijkstraMain2 {
 			for(int j=0; j<N; j++) {
 				if(!v[j]&&g[minVertex][j]!=0&&dist[j]>min+g[minVertex][j]) {
 					dist[j] = min+g[minVertex][j];
-					pq.offer(new int[] {j,dist[j]});
+					q.offer(new int[] {j, dist[j]});
 				}
 			}
 		}
