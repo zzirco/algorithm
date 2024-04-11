@@ -17,6 +17,6 @@ public class Solution_bj_11050_이항계수 {
 				else B[i][j] = B[i-1][j-1] + B[i-1][j];
 			}
 		}
-		System.out.println(B[N][K]);
+		System.out.println(B[N][K]%10007);
 	}
 }
