@@ -46,7 +46,7 @@ public class Solution_bj_1012_유기농배추 {
 				map[r][c] = 1;
 			}
 			for(int i=0; i<N; i++) {
-				for(int j=0; j<N; j++) {
+				for(int j=0; j<M; j++) {
 					if(!v[i][j]&&map[i][j]==1) {
 						bfs(i,j);
 						ans++;
