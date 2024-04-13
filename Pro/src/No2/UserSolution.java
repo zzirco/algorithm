@@ -45,7 +45,9 @@ class UserSolution {
     	int lcnt = n/l;
     	int sum = 0;
     	for(int i=1; i<=num; i++) {
-    		Node tmp = node.(lcnt*i-1);
+    		Iterator<Node> it = node.iterator();
+    		for(int j=0; j<lcnt*i-1; j++) it.next();
+    		Node tmp = it.next();
     		int l1 = node.get(lcnt*i-1).league;
     		int l2 = node.get(lcnt*i).league;
     		node.set(lcnt*i-1, node.get(lcnt*i));
