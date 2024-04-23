@@ -45,16 +45,16 @@ class UserSolution {
     	int lcnt = n/l;
     	int sum = 0;
     	for(int i=1; i<=num; i++) {
-    		Iterator<Node> it = node.iterator();
-    		for(int j=0; j<lcnt*i-1; j++) it.next();
-    		Node tmp = it.next();
-    		int l1 = node.get(lcnt*i-1).league;
-    		int l2 = node.get(lcnt*i).league;
-    		node.set(lcnt*i-1, node.get(lcnt*i));
-    		node.set(lcnt*i,tmp);
-    		node.get(lcnt*i-1).league = l1;
-    		node.get(lcnt*i).league = l2;
-    		sum += node.get(lcnt*i-1).id+node.get(lcnt*i).id;
+//    		Iterator<Node> it = node.iterator();
+//    		for(int j=0; j<lcnt*i-1; j++) it.next();
+//    		Node tmp = it.next();
+//    		int l1 = node.get(lcnt*i-1).league;
+//    		int l2 = node.get(lcnt*i).league;
+//    		node.set(lcnt*i-1, node.get(lcnt*i));
+//    		node.set(lcnt*i,tmp);
+//    		node.get(lcnt*i-1).league = l1;
+//    		node.get(lcnt*i).league = l2;
+//    		sum += node.get(lcnt*i-1).id+node.get(lcnt*i).id;
     	}
         return sum;
     }
@@ -65,14 +65,14 @@ class UserSolution {
     	int mcnt = (lcnt+1)/2;
     	int sum = 0;
     	for(int i=0; i<num; i++) {
-    		Node tmp = node.get(mcnt+i*lcnt-1);
-    		int l1 = node.get(mcnt+i*lcnt-1).league;
-    		int l2 = node.get(lcnt*(i+1)).league;
-    		node.set(mcnt+i*lcnt-1, node.get(lcnt*(i+1)));
-    		node.set(lcnt*(i+1), tmp);
-    		node.get(mcnt+i*lcnt-1).league = l1;
-    		node.get(lcnt*(i+1)).league = l2;
-    		sum += node.get(mcnt+i*lcnt-1).id+node.get(lcnt*(i+1)).id;
+//    		Node tmp = node.get(mcnt+i*lcnt-1);
+//    		int l1 = node.get(mcnt+i*lcnt-1).league;
+//    		int l2 = node.get(lcnt*(i+1)).league;
+//    		node.set(mcnt+i*lcnt-1, node.get(lcnt*(i+1)));
+//    		node.set(lcnt*(i+1), tmp);
+//    		node.get(mcnt+i*lcnt-1).league = l1;
+//    		node.get(lcnt*(i+1)).league = l2;
+//    		sum += node.get(mcnt+i*lcnt-1).id+node.get(lcnt*(i+1)).id;
     	}
         return sum;
     }
