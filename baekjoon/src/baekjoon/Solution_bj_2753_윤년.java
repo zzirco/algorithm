@@ -2,10 +2,11 @@ package baekjoon;
 
 import java.io.*;
 
-public class Solution_bj_2743_단어길이재기 {
+public class Solution_bj_2753_윤년 {
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String s = br.readLine();
-		System.out.println(s.length());
+		int N = Integer.parseInt(br.readLine());
+		if((N%4==0&&N%100!=0)||N%400==0) System.out.println(1);
+		else System.out.println(0);
 	}
 }
