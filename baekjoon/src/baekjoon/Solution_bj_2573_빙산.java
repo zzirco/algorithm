@@ -3,7 +3,7 @@ package baekjoon;
 import java.io.*;
 import java.util.*;
 
-public class Solution_bj_2537_빙산 {
+public class Solution_bj_2573_빙산 {
 	static int[] di = {-1,1,0,0};
 	static int[] dj = {0,0,-1,1};
 	static int N, M;
