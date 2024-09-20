@@ -2,35 +2,39 @@ import java.io.*;
 import java.util.*;
 
 public class test {
-    public static void main(String[] args) throws Exception {
-    	Scanner sc = new Scanner(System.in);
-    	int N = sc.nextInt();
-    	int[][] g = new int[N][N];
-    	boolean[] v = new boolean[N];
-    	int[] dist = new int[N];
-    	for(int i=0; i<N; i++) {
-    		for(int j=0; j<N; j++) {
-    			g[i][j] = sc.nextInt();
-    		}
-    		dist[i] = Integer.MAX_VALUE;
+	static class Node {
+		int x;
+		int y;
+		public int getX() {
+			return x;
+		}
+		public void setX(int x) {
+			this.x = x;
+		}
+		public int getY() {
+			return y;
+		}
+		public void setY(int y) {
+			this.y = y;
+		}
+		public Node(int x, int y) {
+			super();
+			this.x = x;
+			this.y = y;
+		}
+		@Override
+		public String toString() {
+			return "Node [x=" + x + ", y=" + y + "]";
+		}
+		
+	}
+    public static void main(String[] args) {
+    	int x = 0, y = 0;
+    	int index = 5;
+    	Node[] n = new Node[index];
+    	for(int i=0; i<index; i++) {
+    		n[i] = new Node(i,i);
     	}
-    	PriorityQueue<int[]> q = new PriorityQueue<>((o1,o2)->Integer.compare(o1[1], o2[1]));
-    	dist[0]=0;
-    	q.offer(new int[] {0,dist[0]});
-    	while(!q.isEmpty()) {
-    		int[] cur = q.poll();
-    		int minVertex = cur[0];
-    		int min = cur[1];
-    		v[minVertex] = true;
-    		if(minVertex==N-1) break;
-    		for(int j=0; j<N; j++) {
-    			if(!v[j]&&g[minVertex][j]!=0&&dist[j]>min+g[minVertex][j]) {
-    				dist[j] = min+g[minVertex][j];
-    				q.offer(new int[] {j,dist[j]});
-    			}
-    		}
-    	}
-    	System.out.println(dist[N-1]);
-    	sc.close();
+		System.out.println(Arrays.toString(n));
     }
 }
