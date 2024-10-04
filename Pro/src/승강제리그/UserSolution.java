@@ -1,4 +1,4 @@
-package No2;
+package 승강제리그;
 
 import java.util.*;
 

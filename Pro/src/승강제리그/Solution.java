@@ -1,4 +1,4 @@
-package No2;
+package 승강제리그;
 
 import java.util.Scanner;
 
@@ -48,7 +48,7 @@ class Solution {
     public static void main(String[] args) throws Exception {
         int T, MARK;
 
-        System.setIn(new java.io.FileInputStream("res/No2_input.txt"));
+        System.setIn(new java.io.FileInputStream("res/승강제리그.txt"));
         sc = new Scanner(System.in);
         T = sc.nextInt();
         MARK = sc.nextInt();
