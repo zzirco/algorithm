@@ -2,52 +2,36 @@ import java.io.*;
 import java.util.*;
 
 public class test {
-    static final int[] di = {-1,1,0,0};
-    static final int[] dj = {0,0,-1,1};
-    static int n, m, cnt;;
-    static int[][] map;
-    static boolean[][] v;
-    static ArrayList<int[]> list = new ArrayList<>();
-    static void dfs(int i, int j, int idx) {
-        if(i==list.get(idx)[0]&&j==list.get(idx)[1]) {
-            if(idx==m-1) {
-                cnt++;
-                return;
-            }
-            dfs(i,j,idx+1);
-        }
-        for(int d=0; d<4; d++) {
-            int ni = i + di[d];
-            int nj = j + dj[d];
-            if(ni>=0&&ni<n&&nj>=0&&nj<n&&!v[ni][nj]&&map[ni][nj]!=1) {
-                v[i][j] = true;
-                dfs(ni, nj, idx);
-                v[i][j] = false;
-            }
-        }
-    }
-    public static void main (String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
-        map = new int[n][n];
-        v = new boolean[n][n];
-        for(int i=0; i<n; i++) {
-            st = new StringTokenizer(br.readLine());
-            for(int j=0; j<n; j++) {
-                map[i][j] = Integer.parseInt(st.nextToken());
-            }
-        }
-        for(int i=0; i<m; i++) {
-            st = new StringTokenizer(br.readLine());
-            int r = Integer.parseInt(st.nextToken());
-            int c = Integer.parseInt(st.nextToken());
-            list.add(new int[]{r,c});
-        }
-        int starti = list.get(0)[0]-1;
-        int startj = list.get(0)[1]-1;
-        dfs(starti, startj, 0);
-        System.out.println(cnt);
-    }
+	public static void main(String[] args) throws Exception {
+		Scanner sc = new Scanner(System.in);
+		int N = sc.nextInt();
+		int[][] g = new int[N][N];
+		boolean[] v = new boolean[N];
+		int[] dist = new int[N];
+		for(int i=0; i<N; i++) {
+			for(int j=0; j<N; j++) {
+				g[i][j] = sc.nextInt();
+			}
+			dist[i] = Integer.MAX_VALUE;
+		}
+		PriorityQueue<int[]> q = new PriorityQueue<>((o1,o2)->Integer.compare(o1[1], o2[1]));
+		dist[0] = 0;
+		q.offer(new int[] {0,dist[0]});
+		while(!q.isEmpty()) {
+			int[] cur = q.poll();
+			int minVertex = cur[0];
+			int min = cur[1];
+			if(v[minVertex]) continue;
+			v[minVertex] = true;
+			if(minVertex==N-1) break;
+			for(int i=0; i<N; i++) {
+				if(!v[i]&&g[minVertex][i]!=0&&dist[i]>min+g[minVertex][i]) {
+					dist[i] = min + g[minVertex][i];
+					q.offer(new int[] {i,dist[i]});
+				}
+			}
+		}
+		System.out.println(dist[N-1]);
+		sc.close();
+	}
 }
