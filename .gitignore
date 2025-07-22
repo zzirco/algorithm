@@ -1,1 +1,16 @@
-/.metadata/
+# Compiled class files
+*.class
+
+# Eclipse specific
+.metadata
+.project
+.classpath
+.settings/
+bin/
+
+# IntelliJ IDEA specific
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
