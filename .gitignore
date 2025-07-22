@@ -7,8 +7,6 @@
 .classpath
 .settings/
 bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
 
 # IntelliJ IDEA specific
 .idea/
@@ -16,5 +14,3 @@ bin/
 *.iws
 *.ipr
 out/
-!**/src/main/**/out/
-!**/src/test/**/out/
